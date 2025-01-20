@@ -1,0 +1,31 @@
+﻿using Evently.Modules.Events.Api.Database;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+
+namespace Evently.Modules.Events.Api.Events;
+
+public static class GetEvent
+{
+    public static void MapEndpoint(IEndpointRouteBuilder routeBuilder)
+    {
+        routeBuilder.MapGet("events/{id}", async (Guid id, EventsDbContext context) =>
+        {
+            EventReponse? @event = await context.Events
+                .Where(e => e.Id == id)
+                .Select(e => new EventReponse(
+                   e.Id,
+                   e.Title,
+                   e.Description,
+                   e.Location,
+                   e.StartsAtUtc,
+                   e.EndsAtUtc
+                 ))
+                .SingleOrDefaultAsync();
+
+            return @event is null ? Results.NotFound() : Results.Ok(@event);
+        })
+        .WithTags(Tags.Events);
+    }
+}
