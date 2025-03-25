@@ -25,9 +25,9 @@ public static class EventErrors
     public static readonly Error NotDraft = Error.Problem("Events.NotDraft", "The event is not in draft status");
 
 
-    public static readonly Error AlreadyCanceled = Error.Problem(
-        "Events.AlreadyCanceled",
-        "The event was already canceled");
+    public static readonly Error AlreadyCancelled = Error.Problem(
+        "Events.AlreadyCancelled",
+        "The event was already cancelled");
 
 
     public static readonly Error AlreadyStarted = Error.Problem(

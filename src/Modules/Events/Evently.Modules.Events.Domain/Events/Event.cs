@@ -24,7 +24,7 @@ public sealed class Event : Entity
 
     public EventStatus Status { get; private set; }
 
-    public static Event Create(
+    public static Result<Event> Create(
         Category category,
         string title,
         string description,
@@ -34,7 +34,7 @@ public sealed class Event : Entity
     {
         if (endsAtUtc.HasValue && endsAtUtc < startsAtUtc)
         {
-            throw new ArgumentException("EndsAtUtc must be greater than StartsAtUtc");
+            return Result.Failure<Event>(EventErrors.EndDatePrecedesStartDate);
         }
 
         var @event = new Event
@@ -54,16 +54,18 @@ public sealed class Event : Entity
         return @event;
     }
 
-    public void Publish()
+    public Result Publish()
     {
         if (Status != EventStatus.Draft)
         {
-            return;
+            return Result.Failure(EventErrors.NotDraft);
         }
 
         Status = EventStatus.Published;
 
         Raise(new EventPublishedDomainEvent(Id));
+
+        return Result.Success();
     }
 
     public void Reschedule(DateTime startsAtUtc, DateTime? endsAtUtc)
@@ -79,20 +81,22 @@ public sealed class Event : Entity
         Raise(new EventRescheduledDomainEvent(Id, startsAtUtc, endsAtUtc));
     }
 
-    public void Cancel(DateTime utcNow)
+    public Result Cancel(DateTime utcNow)
     {
         if (Status == EventStatus.Cancelled)
         {
-            return;
+            return Result.Failure(EventErrors.AlreadyCancelled);
         }
 
         if (StartsAtUtc < utcNow)
         {
-            return;
+            return Result.Failure(EventErrors.AlreadyStarted);
         }
 
         Status = EventStatus.Cancelled;
 
         Raise(new EventCancelledDomainEvent(Id));
+
+        return Result.Success();
     }
 }

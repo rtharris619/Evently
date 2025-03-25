@@ -66,8 +66,9 @@ csharp_style_expression_bodied_operators = true:error
 csharp_style_expression_bodied_properties = true:error
 csharp_style_expression_bodied_indexers = true:error
 csharp_style_expression_bodied_accessors = true:error
-csharp_style_expression_bodied_lambdas = true:error
+csharp_style_expression_bodied_lambdas = true:none
 csharp_style_expression_bodied_local_functions = true:error
+csharp_prefer_system_threading_lock = true:suggestion
 
 [*.{cs,vb}]
 dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
@@ -258,6 +259,9 @@ dotnet_diagnostic.CA1040.severity = none
 # CA1051: Do not declare visible instance fields
 dotnet_diagnostic.CA1051.severity = none
 
+# CA1054: URI-like parameters should not be strings
+dotnet_diagnostic.CA1054.severity = none
+
 # CA1056: URI-like properties should not be strings
 dotnet_diagnostic.CA1056.severity = none
 
@@ -267,11 +271,23 @@ dotnet_diagnostic.CA1062.severity = none
 # CA1063: Implement IDisposable Correctly
 dotnet_diagnostic.CA1063.severity = none
 
+# CA1304: Specify CultureInfo
+dotnet_diagnostic.CA1304.severity = none
+
 # CA1307: Specify StringComparison for clarity
 dotnet_diagnostic.CA1307.severity = none
 
 # CA1308: Normalize strings to uppercase
 dotnet_diagnostic.CA1308.severity = none
+
+# CA1309: Use ordinal string comparison
+dotnet_diagnostic.CA1309.severity = none
+
+# CA1311: Specify a culture or use an invariant version
+dotnet_diagnostic.CA1311.severity = none
+
+# CA1515: Consider making public types internal
+dotnet_diagnostic.CA1515.severity = none
 
 # CA1700: Do not name enum values 'Reserved'
 dotnet_diagnostic.CA1700.severity = none
@@ -333,6 +349,12 @@ dotnet_diagnostic.CA2326.severity = none
 # CA2326: Do not use insecure JsonSerializerSettings
 dotnet_diagnostic.CA2327.severity = none
 
+# CA5394: Do not use insecure randomness
+dotnet_diagnostic.CA5394.severity = none
+
+# CA5401: Do not use CreateEncryptor with non-default IV
+dotnet_diagnostic.CA5401.severity = none
+
 # CS8600: Converting null literal or possible null value to non-nullable type.
 dotnet_diagnostic.CS8600.severity = none
 
@@ -343,6 +365,9 @@ dotnet_diagnostic.CS8603.severity = none
 dotnet_diagnostic.CS8618.severity = none
 
 # IDE Code Analyzers rules
+
+# IDE0005: Remove unnecessary using directives
+dotnet_diagnostic.IDE0005.severity = none
 
 # IDE0046: Convert to conditional expression
 dotnet_diagnostic.IDE0046.severity = none
@@ -361,6 +386,9 @@ dotnet_diagnostic.IDE0290.severity = none
 # S112: General or reserved exceptions should never be thrown
 dotnet_diagnostic.S112.severity = none
 
+# S125: Remove this commented out code
+dotnet_diagnostic.S125.severity = none
+
 # S1075: URIs should not be hardcoded
 dotnet_diagnostic.S1075.severity = none
 
@@ -372,6 +400,12 @@ dotnet_diagnostic.S1144.severity = none
 
 # S2094: Classes should not be empty
 dotnet_diagnostic.S2094.severity = none
+
+# S2139: Exceptions should be either logged or rethrown but not both
+dotnet_diagnostic.S2139.severity = none
+
+# S2325: Methods and properties that don't access instance data should be static
+dotnet_diagnostic.S2325.severity = none
 
 # S2365: Properties should not make collection or array copies
 dotnet_diagnostic.S2365.severity = none
@@ -387,3 +421,22 @@ dotnet_diagnostic.S4136.severity = none
 
 # S6605: Collection-specific "Exists" method should be used instead of the "Any" extension
 dotnet_diagnostic.S6605.severity = none
+
+# S6781: JWT secret keys should not be disclosed
+dotnet_diagnostic.S6781.severity = none
+dotnet_style_operator_placement_when_wrapping = beginning_of_line
+tab_width = 4
+indent_size = 4
+end_of_line = crlf
+dotnet_style_coalesce_expression = true:none
+dotnet_style_null_propagation = true:error
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:error
+dotnet_style_prefer_auto_properties = true:warning
+dotnet_style_object_initializer = true:error
+dotnet_style_collection_initializer = true:error
+dotnet_style_prefer_conditional_expression_over_assignment = true:error
+dotnet_style_prefer_conditional_expression_over_return = true:none
+dotnet_style_explicit_tuple_names = true:error
+dotnet_style_prefer_inferred_tuple_names = true:error
+dotnet_style_prefer_inferred_anonymous_type_member_names = true:error
+dotnet_style_prefer_compound_assignment = true:error
