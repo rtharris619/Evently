@@ -1,9 +1,13 @@
 ﻿
 using Evently.Modules.Events.Application.Abstractions.Data;
+using Evently.Modules.Events.Domain.Categories;
 using Evently.Modules.Events.Domain.Events;
+using Evently.Modules.Events.Domain.TicketTypes;
+using Evently.Modules.Events.Infrastructure.Categories;
 using Evently.Modules.Events.Infrastructure.Data;
 using Evently.Modules.Events.Infrastructure.Database;
 using Evently.Modules.Events.Infrastructure.Events;
+using Evently.Modules.Events.Infrastructure.TicketTypes;
 using Evently.Modules.Events.Presentation.Events;
 using FluentValidation;
 using Microsoft.AspNetCore.Routing;
@@ -57,7 +61,10 @@ public static class EventsModule
                 .UseSnakeCaseNamingConvention()
         );
 
-        services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<EventsDbContext>());
+
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IEventRepository, EventRepository>();
+        services.AddScoped<ITicketTypeRepository, TicketTypeRepository>();
     }
 }
