@@ -1,6 +1,6 @@
 ﻿namespace Evently.Modules.Events.Application.Events.GetEvents;
 
-public sealed record EventResponse(
+public sealed record EventsResponse(
     Guid Id,
     Guid CategoryId,
     string Title,

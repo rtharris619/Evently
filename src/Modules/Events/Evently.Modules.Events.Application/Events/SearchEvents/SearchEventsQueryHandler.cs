@@ -25,27 +25,27 @@ internal sealed class SearchEventsQueryHandler(IDbConnectionFactory dbConnection
            Skip: (request.Page - 1) * request.PageSize
         );
 
-        IReadOnlyCollection<EventResponse> events = await GetEventsAsync(connection, parameters);
+        IReadOnlyCollection<EventsResponse> events = await GetEventsAsync(connection, parameters);
 
         int totalCount = await CountEventsAsync(connection, parameters);
 
         return new SearchEventsResponse(request.Page, request.PageSize, totalCount, events);
     }
 
-    private static async Task<IReadOnlyCollection<EventResponse>> GetEventsAsync(
+    private static async Task<IReadOnlyCollection<EventsResponse>> GetEventsAsync(
         DbConnection connection,
         SearchEventsParameters parameters)
     {
         const string sql =
             $"""
                 SELECT
-                    id AS {nameof(EventResponse.Id)},
-                    category_id AS {nameof(EventResponse.CategoryId)},
-                    title AS {nameof(EventResponse.Title)},
-                    description AS {nameof(EventResponse.Description)},
-                    location AS {nameof(EventResponse.Location)},
-                    starts_at_utc AS {nameof(EventResponse.StartsAtUtc)},
-                    ends_at_utc AS {nameof(EventResponse.EndsAtUtc)}
+                    id AS {nameof(EventsResponse.Id)},
+                    category_id AS {nameof(EventsResponse.CategoryId)},
+                    title AS {nameof(EventsResponse.Title)},
+                    description AS {nameof(EventsResponse.Description)},
+                    location AS {nameof(EventsResponse.Location)},
+                    starts_at_utc AS {nameof(EventsResponse.StartsAtUtc)},
+                    ends_at_utc AS {nameof(EventsResponse.EndsAtUtc)}
                 FROM events.events
                 WHERE
                    status = @Status AND
@@ -57,7 +57,7 @@ internal sealed class SearchEventsQueryHandler(IDbConnectionFactory dbConnection
                 LIMIT @Take
             """;
 
-        List<EventResponse> events = (await connection.QueryAsync<EventResponse>(sql, parameters)).AsList();
+        List<EventsResponse> events = (await connection.QueryAsync<EventsResponse>(sql, parameters)).AsList();
 
         return events;
     }

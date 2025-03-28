@@ -6,4 +6,4 @@ public sealed record SearchEventsResponse(
     int Page,
     int PageSize,
     int TotalCount,
-    IReadOnlyCollection<EventResponse> Events);
+    IReadOnlyCollection<EventsResponse> Events);

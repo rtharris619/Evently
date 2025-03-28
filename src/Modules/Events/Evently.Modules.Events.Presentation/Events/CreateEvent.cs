@@ -26,18 +26,18 @@ internal static class CreateEvent
         })
         .WithTags(Tags.Events);
     }
-}
 
-internal sealed class Request
-{
-    public Guid CategoryId { get; init; }
-    public string Title { get; init; }
+    internal sealed class Request
+    {
+        public Guid CategoryId { get; init; }
+        public string Title { get; init; }
 
-    public string Description { get; init; }
+        public string Description { get; init; }
 
-    public string Location { get; init; }
+        public string Location { get; init; }
 
-    public DateTime StartsAtUtc { get; init; }
+        public DateTime StartsAtUtc { get; init; }
 
-    public DateTime? EndsAtUtc { get; init; }
+        public DateTime? EndsAtUtc { get; init; }
+    }
 }

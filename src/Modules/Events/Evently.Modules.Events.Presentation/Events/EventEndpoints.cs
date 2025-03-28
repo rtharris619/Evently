@@ -4,9 +4,14 @@ namespace Evently.Modules.Events.Presentation.Events;
 
 public static class EventEndpoints
 {
-    public static void MapEndpoints(IEndpointRouteBuilder app)
+    public static void MapEndpoints(IEndpointRouteBuilder routeBuilder)
     {
-        GetEvent.MapEndpoint(app);
-        CreateEvent.MapEndpoint(app);
+        CancelEvent.MapEndpoint(routeBuilder);
+        CreateEvent.MapEndpoint(routeBuilder);
+        GetEvent.MapEndpoint(routeBuilder);
+        GetEvents.MapEndpoint(routeBuilder);
+        PublishEvent.MapEndpoint(routeBuilder);
+        RescheduleEvent.MapEndpoint(routeBuilder);
+        SearchEvents.MapEndpoint(routeBuilder);
     }
 }
