@@ -12,7 +12,7 @@ internal static class CreateCategory
 {
     public static void MapEndpoint(IEndpointRouteBuilder routeBuilder)
     {
-        routeBuilder.MapPost("categories", async (Request request, ISender sender) =>
+        routeBuilder.MapPost("categories", async (CreateCategoryRequest request, ISender sender) =>
         {
             Result<Guid> result = await sender.Send(new CreateCategoryCommand(request.Name));
 
@@ -21,7 +21,7 @@ internal static class CreateCategory
         .WithTags(Tags.Categories);
     }
 
-    internal sealed class Request
+    internal sealed class CreateCategoryRequest
     {
         public string Name { get; init; }
     }

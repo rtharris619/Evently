@@ -12,7 +12,7 @@ internal static class ChangeTicketTypePrice
 {
     public static void MapEndpoint(IEndpointRouteBuilder routeBuilder)
     {
-        routeBuilder.MapPut("ticket-types/{id}/price", async (Guid id, Request request, ISender sender) =>
+        routeBuilder.MapPut("ticket-types/{id}/price", async (Guid id, ChangeTicketTypePriceRequest request, ISender sender) =>
         {
             Result result = await sender.Send(new UpdateTicketTypePriceCommand(id, request.Price));
 
@@ -21,7 +21,7 @@ internal static class ChangeTicketTypePrice
         .WithTags(Tags.TicketTypes);
     }
 
-    internal sealed class Request
+    internal sealed class ChangeTicketTypePriceRequest
     {
         public decimal Price { get; init; }
     }

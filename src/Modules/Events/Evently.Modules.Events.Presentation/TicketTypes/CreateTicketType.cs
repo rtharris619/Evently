@@ -12,7 +12,7 @@ internal static class CreateTicketType
 {
     public static void MapEndpoint(IEndpointRouteBuilder routeBuilder)
     {
-        routeBuilder.MapPost("ticket-types", async (Request request, ISender sender) =>
+        routeBuilder.MapPost("ticket-types", async (CreateTicketTypeRequest request, ISender sender) =>
         {
             Result<Guid> result = await sender.Send(new CreateTicketTypeCommand(
                 request.EventId,
@@ -26,7 +26,7 @@ internal static class CreateTicketType
         .WithTags(Tags.TicketTypes);
     }
 
-    internal sealed class Request
+    internal sealed class CreateTicketTypeRequest
     {
         public Guid EventId { get; init; }
 

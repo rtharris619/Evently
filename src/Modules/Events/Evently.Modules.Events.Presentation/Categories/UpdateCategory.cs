@@ -12,7 +12,7 @@ internal static class UpdateCategory
 {
     public static void MapEndpoint(IEndpointRouteBuilder routeBuilder)
     {
-        routeBuilder.MapPut("categories/{id}", async (Guid id, Request request, ISender sender) =>
+        routeBuilder.MapPut("categories/{id}", async (Guid id, UpdateCategoryRequest request, ISender sender) =>
         {
             Result result = await sender.Send(new UpdateCategoryCommand(id, request.Name));
 
@@ -21,7 +21,7 @@ internal static class UpdateCategory
         .WithTags(Tags.Categories);
     }
 
-    internal sealed class Request
+    internal sealed class UpdateCategoryRequest
     {
         public string Name { get; init; }
     }
