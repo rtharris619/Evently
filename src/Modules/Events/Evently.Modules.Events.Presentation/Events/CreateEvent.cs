@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
 using MediatR;
 using Evently.Modules.Events.Application.Events.CreateEvent;
-using Evently.Modules.Events.Domain.Abstractions;
+using Evently.Common.Domain;
 using Evently.Modules.Events.Presentation.ApiResults;
 
 namespace Evently.Modules.Events.Presentation.Events;

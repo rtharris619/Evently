@@ -1,6 +1,6 @@
 ﻿
-using Evently.Modules.Events.Application.Abstractions.Clock;
-using Evently.Modules.Events.Application.Abstractions.Data;
+using Evently.Common.Application.Clock;
+using Evently.Common.Application.Data;
 using Evently.Modules.Events.Domain.Categories;
 using Evently.Modules.Events.Domain.Events;
 using Evently.Modules.Events.Domain.TicketTypes;
@@ -37,13 +37,6 @@ public static class EventsModule
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddMediatR(config =>
-        {
-            config.RegisterServicesFromAssembly(Application.AssemblyReference.Assembly);
-        });
-
-        services.AddValidatorsFromAssembly(Application.AssemblyReference.Assembly, includeInternalTypes: true);
-
         services.AddInfrastructure(configuration);
 
         return services;
