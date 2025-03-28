@@ -5,8 +5,8 @@ using Evently.Modules.Events.Domain.Categories;
 using Evently.Modules.Events.Domain.Events;
 using Evently.Modules.Events.Domain.TicketTypes;
 using Evently.Modules.Events.Infrastructure.Categories;
-using Evently.Modules.Events.Infrastructure.Clock;
-using Evently.Modules.Events.Infrastructure.Data;
+using Evently.Common.Infrastructure.Clock;
+using Evently.Common.Infrastructure.Data;
 using Evently.Modules.Events.Infrastructure.Database;
 using Evently.Modules.Events.Infrastructure.Events;
 using Evently.Modules.Events.Infrastructure.TicketTypes;
@@ -44,19 +44,12 @@ public static class EventsModule
 
     private static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        string dbConnectionString = configuration.GetConnectionString("Database");
-
-        NpgsqlDataSource npgsqlDataSource = new NpgsqlDataSourceBuilder(dbConnectionString).Build();
-        services.TryAddSingleton(npgsqlDataSource);
-
-        services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
-
-        services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
+        string databaseConnectionString = configuration.GetConnectionString("Database")!;
 
         services.AddDbContext<EventsDbContext>(options =>
             options
                 .UseNpgsql(
-                    dbConnectionString,
+                    databaseConnectionString,
                     npgsqlOptions => npgsqlOptions
                         .MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Events))
                 .UseSnakeCaseNamingConvention()
