@@ -3,11 +3,15 @@ using Evently.Modules.Events.Infrastructure;
 using Evently.Common.Application;
 using Evently.Common.Infrastructure;
 using Serilog;
+using Evently.Api.Middleware;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, loggerConfig) =>
     loggerConfig.ReadFrom.Configuration(context.Configuration));
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -33,5 +37,7 @@ if (app.Environment.IsDevelopment())
 EventsModule.MapEndpoints(app);
 
 app.UseSerilogRequestLogging();
+
+app.UseExceptionHandler();
 
 app.Run();
