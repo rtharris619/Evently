@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Http;
 using MediatR;
 using Evently.Modules.Events.Application.Events.CreateEvent;
 using Evently.Common.Domain;
-using Evently.Modules.Events.Presentation.ApiResults;
+using Evently.Common.Presentation.ApiResults;
+using Evently.Common.Presentation.Endpoints;
 
 namespace Evently.Modules.Events.Presentation.Events;
 
-internal static class CreateEvent
+internal sealed class CreateEvent : IEndPoint
 {
-    public static void MapEndpoint(IEndpointRouteBuilder routeBuilder)
+    public void MapEndpoint(IEndpointRouteBuilder routeBuilder)
     {
         routeBuilder.MapPost("events", async (CreateEventRequest request, ISender sender) =>
         {
@@ -22,7 +23,7 @@ internal static class CreateEvent
                 request.StartsAtUtc,
                 request.EndsAtUtc));
 
-            return result.Match(Results.Ok, ApiResults.ApiResults.Problem);
+            return result.Match(Results.Ok, ApiResults.Problem);
         })
         .WithTags(Tags.Events);
     }

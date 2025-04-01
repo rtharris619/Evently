@@ -1,16 +1,17 @@
 ﻿using Evently.Modules.Events.Application.Events.SearchEvents;
 using Evently.Common.Domain;
-using Evently.Modules.Events.Presentation.ApiResults;
+using Evently.Common.Presentation.ApiResults;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Evently.Common.Presentation.Endpoints;
 
 namespace Evently.Modules.Events.Presentation.Events;
 
-internal static class SearchEvents
+internal sealed class SearchEvents : IEndPoint
 {
-    public static void MapEndpoint(IEndpointRouteBuilder routeBuilder)
+    public void MapEndpoint(IEndpointRouteBuilder routeBuilder)
     {
         routeBuilder.MapGet("events/search", async (
             ISender sender,
@@ -23,7 +24,7 @@ internal static class SearchEvents
             Result<SearchEventsResponse> result = await sender.Send(
                 new SearchEventsQuery(categoryId, startDate, endDate, page, pageSize));
 
-            return result.Match(Results.Ok, ApiResults.ApiResults.Problem);
+            return result.Match(Results.Ok, ApiResults.Problem);
         })
         .WithTags(Tags.Events);
     }

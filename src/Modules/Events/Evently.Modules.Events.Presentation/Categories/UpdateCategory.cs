@@ -1,17 +1,18 @@
 ﻿using Evently.Modules.Events.Application.Categories.UpdateCategory;
 using Evently.Common.Domain;
-using Evently.Modules.Events.Presentation.ApiResults;
+using Evently.Common.Presentation.ApiResults;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Evently.Common.Application.Caching;
+using Evently.Common.Presentation.Endpoints;
 
 namespace Evently.Modules.Events.Presentation.Categories;
 
-internal static class UpdateCategory
+internal sealed class UpdateCategory : IEndPoint
 {
-    public static void MapEndpoint(IEndpointRouteBuilder routeBuilder)
+    public void MapEndpoint(IEndpointRouteBuilder routeBuilder)
     {
         routeBuilder.MapPut("categories/{id}", async (Guid id, UpdateCategoryRequest request, ISender sender, ICacheService cacheService) =>
         {
@@ -22,7 +23,7 @@ internal static class UpdateCategory
                 await cacheService.RemoveAsync(CacheKeys.Categories);
             }
 
-            return result.Match(() => Results.Ok(), ApiResults.ApiResults.Problem);
+            return result.Match(() => Results.Ok(), ApiResults.Problem);
         })
         .WithTags(Tags.Categories);
     }

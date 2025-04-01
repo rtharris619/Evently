@@ -5,6 +5,7 @@ using Evently.Common.Infrastructure;
 using Serilog;
 using Evently.Api.Middleware;
 using HealthChecks.UI.Client;
+using Evently.Common.Presentation.Endpoints;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -44,7 +45,7 @@ if (app.Environment.IsDevelopment())
     app.ApplyMigrations();
 }
 
-EventsModule.MapEndpoints(app);
+app.MapEndpoints();
 
 app.MapHealthChecks("health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
 {
