@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Evently.Common.Application.Caching;
 
 namespace Evently.Modules.Events.Presentation.Categories;
 
@@ -12,9 +13,14 @@ internal static class UpdateCategory
 {
     public static void MapEndpoint(IEndpointRouteBuilder routeBuilder)
     {
-        routeBuilder.MapPut("categories/{id}", async (Guid id, UpdateCategoryRequest request, ISender sender) =>
+        routeBuilder.MapPut("categories/{id}", async (Guid id, UpdateCategoryRequest request, ISender sender, ICacheService cacheService) =>
         {
             Result result = await sender.Send(new UpdateCategoryCommand(id, request.Name));
+
+            if (result.IsSuccess)
+            {
+                await cacheService.RemoveAsync(CacheKeys.Categories);
+            }
 
             return result.Match(() => Results.Ok(), ApiResults.ApiResults.Problem);
         })
