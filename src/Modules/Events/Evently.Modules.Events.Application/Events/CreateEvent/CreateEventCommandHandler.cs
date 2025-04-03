@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using Evently.Common.Application.Clock;
+﻿using Evently.Common.Application.Clock;
 using Evently.Common.Application.Data;
 using Evently.Common.Application.Messaging;
 using Evently.Common.Domain;
