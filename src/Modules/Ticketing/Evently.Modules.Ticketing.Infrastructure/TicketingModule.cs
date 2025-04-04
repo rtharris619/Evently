@@ -1,5 +1,6 @@
 ﻿using Evently.Common.Application.Data;
 using Evently.Common.Presentation.Endpoints;
+using Evently.Modules.Ticketing.Application.Carts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,8 +19,12 @@ public static class TicketingModule
         return services;
     }
 
+#pragma warning disable S1172 // Unused method parameters should be removed
+#pragma warning disable IDE0060 // Remove unused parameter
     private static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore S1172 // Unused method parameters should be removed
     {
-        // Method intentionally left empty.
+        services.AddSingleton<CartService>();
     }
 }
