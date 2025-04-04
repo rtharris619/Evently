@@ -1,5 +1,4 @@
-﻿
-namespace Evently.Common.Application.Data;
+﻿namespace Evently.Common.Application.Data;
 
 public interface IUnitOfWork
 {
