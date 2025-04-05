@@ -25,6 +25,7 @@ using Evently.Common.Presentation.Endpoints;
 using Evently.Common.Infrastructure.Interceptors;
 using Evently.Modules.Events.PublicApi;
 using Evently.Modules.Events.Infrastructure.PublicApi;
+using Evently.Modules.Events.Application.Abstractions.Data;
 
 namespace Evently.Modules.Events.Infrastructure;
 
