@@ -11,6 +11,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Evently.Modules.Ticketing.Application.Abstractions.Data;
 using MassTransit;
 using Evently.Modules.Ticketing.Presentation.Customers;
+using Evently.Modules.Ticketing.Domain.Orders;
+using Evently.Modules.Ticketing.Domain.Payments;
+using Evently.Modules.Ticketing.Domain.Tickets;
+using Evently.Modules.Ticketing.Infrastructure.Events;
+using Evently.Modules.Ticketing.Infrastructure.Orders;
+using Evently.Modules.Ticketing.Infrastructure.Payments;
+using Evently.Modules.Ticketing.Infrastructure.Tickets;
+using Evently.Modules.Ticketing.Domain.Events;
+using Evently.Modules.Ticketing.Application.Abstractions.Payments;
 
 namespace Evently.Modules.Ticketing.Infrastructure;
 
@@ -44,9 +53,15 @@ public static class TicketingModule
                 .UseSnakeCaseNamingConvention());
 
         services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IEventRepository, EventRepository>();
+        services.AddScoped<ITicketTypeRepository, TicketTypeRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<ITicketRepository, TicketRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
 
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<TicketingDbContext>());
 
         services.AddSingleton<CartService>();
+        services.AddSingleton<IPaymentService, PaymentService>();
     }
 }
