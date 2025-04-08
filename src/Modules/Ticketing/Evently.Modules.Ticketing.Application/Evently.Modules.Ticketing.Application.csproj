@@ -5,11 +5,6 @@
     <ProjectReference Include="..\Evently.Modules.Ticketing.Domain\Evently.Modules.Ticketing.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Orders\CreateOrder\" />
-    <Folder Include="Orders\GetOrder\" />
-    <Folder Include="Orders\GetOrders\" />
-    <Folder Include="Payments\RefundPaymentForEvent\" />
-    <Folder Include="Payments\RefundPayment\" />
     <Folder Include="Tickets\ArchiveTicketsForEvent\" />
     <Folder Include="Tickets\CreateTicketBatch\" />
     <Folder Include="Tickets\GetTicket\" />
