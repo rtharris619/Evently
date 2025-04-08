@@ -4,4 +4,17 @@
     <ProjectReference Include="..\..\Events\Evently.Modules.Events.PublicApi\Evently.Modules.Events.PublicApi.csproj" />
     <ProjectReference Include="..\Evently.Modules.Ticketing.Domain\Evently.Modules.Ticketing.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Orders\CreateOrder\" />
+    <Folder Include="Orders\GetOrder\" />
+    <Folder Include="Orders\GetOrders\" />
+    <Folder Include="Payments\RefundPaymentForEvent\" />
+    <Folder Include="Payments\RefundPayment\" />
+    <Folder Include="Tickets\ArchiveTicketsForEvent\" />
+    <Folder Include="Tickets\CreateTicketBatch\" />
+    <Folder Include="Tickets\GetTicket\" />
+    <Folder Include="Tickets\GetTicketByCode\" />
+    <Folder Include="Tickets\GetTicketForOrder\" />
+    <Folder Include="TicketTypes\UpdateTicketTypePrice\" />
+  </ItemGroup>
 </Project>
