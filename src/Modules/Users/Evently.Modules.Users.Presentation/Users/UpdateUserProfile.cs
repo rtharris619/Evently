@@ -22,6 +22,7 @@ internal sealed class UpdateUserProfile : IEndPoint
 
             return result.Match(Results.NoContent, ApiResults.Problem);
         })
+        .RequireAuthorization()
         .WithTags(Tags.Users);
     }
 

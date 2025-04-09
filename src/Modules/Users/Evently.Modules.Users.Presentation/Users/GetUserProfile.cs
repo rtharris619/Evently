@@ -19,6 +19,7 @@ internal sealed class GetUserProfile : IEndPoint
 
             return result.Match(Results.Ok, ApiResults.Problem);
         })
+        .RequireAuthorization()
         .WithTags(Tags.Users);
     }
 }
