@@ -37,7 +37,8 @@ builder.Configuration.AddModuleConfiguration(["events", "users", "ticketing"]);
 
 builder.Services.AddHealthChecks()
     .AddNpgSql(databaseConnectionString)
-    .AddRedis(redisConnectionString);
+    .AddRedis(redisConnectionString)
+    .AddUrlGroup(new Uri(builder.Configuration.GetValue<string>("KeyCloak:HealthUrl")!), HttpMethod.Get, "keycloak");
 
 builder.Services.AddEventsModule(builder.Configuration);
 builder.Services.AddUsersModule(builder.Configuration);
@@ -63,5 +64,9 @@ app.MapHealthChecks("health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.
 app.UseSerilogRequestLogging();
 
 app.UseExceptionHandler();
+
+// Order is important!
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
