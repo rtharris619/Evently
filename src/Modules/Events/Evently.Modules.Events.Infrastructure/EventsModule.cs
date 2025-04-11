@@ -22,10 +22,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Npgsql;
 using Evently.Common.Presentation.Endpoints;
-using Evently.Common.Infrastructure.Interceptors;
 using Evently.Modules.Events.PublicApi;
 using Evently.Modules.Events.Infrastructure.PublicApi;
 using Evently.Modules.Events.Application.Abstractions.Data;
+using Evently.Common.Infrastructure.Outbox;
 
 namespace Evently.Modules.Events.Infrastructure;
 
@@ -53,7 +53,7 @@ public static class EventsModule
                     npgsqlOptions => npgsqlOptions
                         .MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Events))
                 .UseSnakeCaseNamingConvention()
-                .AddInterceptors(sp.GetRequiredService<PublishDomainEventsInterceptor>())
+                .AddInterceptors(sp.GetRequiredService<InsertOutboxMessagesInterceptor>())
         );
 
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<EventsDbContext>());

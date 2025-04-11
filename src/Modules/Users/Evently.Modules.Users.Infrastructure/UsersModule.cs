@@ -1,5 +1,4 @@
 ﻿using Evently.Common.Application.Data;
-using Evently.Common.Infrastructure.Interceptors;
 using Evently.Modules.Users.Domain.Users;
 using Evently.Modules.Users.Infrastructure.Database;
 using Evently.Modules.Users.Infrastructure.Users;
@@ -14,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Evently.Modules.Users.Application.Abstractions.Identity;
 using Evently.Common.Application.Authorization;
 using Evently.Modules.Users.Infrastructure.Authorization;
+using Evently.Common.Infrastructure.Outbox;
 
 namespace Evently.Modules.Users.Infrastructure;
 
@@ -54,7 +54,7 @@ public static class UsersModule
                     configuration.GetConnectionString("Database"),
                     npgsqlOptions => npgsqlOptions
                         .MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Users))
-                .AddInterceptors(sp.GetRequiredService<PublishDomainEventsInterceptor>())
+                .AddInterceptors(sp.GetRequiredService<InsertOutboxMessagesInterceptor>())
                 .UseSnakeCaseNamingConvention());
 
         services.AddScoped<IUserRepository, UserRepository>();

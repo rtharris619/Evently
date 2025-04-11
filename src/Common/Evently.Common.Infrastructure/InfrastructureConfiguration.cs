@@ -7,7 +7,7 @@ using Evently.Common.Infrastructure.Authorization;
 using Evently.Common.Infrastructure.Caching;
 using Evently.Common.Infrastructure.Clock;
 using Evently.Common.Infrastructure.Data;
-using Evently.Common.Infrastructure.Interceptors;
+using Evently.Common.Infrastructure.Outbox;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,7 +34,7 @@ public static class InfrastructureConfiguration
 
         services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
 
-        services.TryAddSingleton<PublishDomainEventsInterceptor>();
+        services.TryAddSingleton<InsertOutboxMessagesInterceptor>();
 
         services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
 

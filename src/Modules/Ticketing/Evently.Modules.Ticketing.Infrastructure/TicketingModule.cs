@@ -1,5 +1,4 @@
-﻿using Evently.Common.Infrastructure.Interceptors;
-using Evently.Common.Presentation.Endpoints;
+﻿using Evently.Common.Presentation.Endpoints;
 using Evently.Modules.Ticketing.Application.Carts;
 using Evently.Modules.Ticketing.Domain.Customers;
 using Evently.Modules.Ticketing.Infrastructure.Customers;
@@ -20,6 +19,7 @@ using Evently.Modules.Ticketing.Infrastructure.Payments;
 using Evently.Modules.Ticketing.Infrastructure.Tickets;
 using Evently.Modules.Ticketing.Domain.Events;
 using Evently.Modules.Ticketing.Application.Abstractions.Payments;
+using Evently.Common.Infrastructure.Outbox;
 
 namespace Evently.Modules.Ticketing.Infrastructure;
 
@@ -49,7 +49,7 @@ public static class TicketingModule
                     configuration.GetConnectionString("Database"),
                     npgsqlOptions => npgsqlOptions
                         .MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Ticketing))
-                .AddInterceptors(sp.GetRequiredService<PublishDomainEventsInterceptor>())
+                .AddInterceptors(sp.GetRequiredService<InsertOutboxMessagesInterceptor>())
                 .UseSnakeCaseNamingConvention());
 
         services.AddScoped<ICustomerRepository, CustomerRepository>();
