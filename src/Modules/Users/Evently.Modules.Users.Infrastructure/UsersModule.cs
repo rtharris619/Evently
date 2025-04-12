@@ -14,6 +14,7 @@ using Evently.Modules.Users.Application.Abstractions.Identity;
 using Evently.Common.Application.Authorization;
 using Evently.Modules.Users.Infrastructure.Authorization;
 using Evently.Common.Infrastructure.Outbox;
+using Evently.Modules.Users.Infrastructure.Outbox;
 
 namespace Evently.Modules.Users.Infrastructure;
 
@@ -60,5 +61,8 @@ public static class UsersModule
         services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<UsersDbContext>());
+
+        services.Configure<OutboxOptions>(configuration.GetSection("Users:Outbox"));
+        services.ConfigureOptions<ConfigureProcessOutboxJob>();
     }
 }

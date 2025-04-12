@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Npgsql;
+using Quartz;
 using StackExchange.Redis;
 
 namespace Evently.Common.Infrastructure;
@@ -37,6 +38,9 @@ public static class InfrastructureConfiguration
         services.TryAddSingleton<InsertOutboxMessagesInterceptor>();
 
         services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
+
+        services.AddQuartz();
+        services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
         // Caching
         try
