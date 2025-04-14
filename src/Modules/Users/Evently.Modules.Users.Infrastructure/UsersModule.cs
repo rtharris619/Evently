@@ -15,6 +15,8 @@ using Evently.Common.Application.Authorization;
 using Evently.Modules.Users.Infrastructure.Authorization;
 using Evently.Common.Infrastructure.Outbox;
 using Evently.Modules.Users.Infrastructure.Outbox;
+using Evently.Common.Application.Messaging;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Evently.Modules.Users.Infrastructure;
 
@@ -24,6 +26,8 @@ public static class UsersModule
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddDomainEventHandlers();
+
         services.AddInfrastructure(configuration);
 
         services.AddEndpoints(Presentation.AssemblyReference.Assembly);
@@ -64,5 +68,17 @@ public static class UsersModule
 
         services.Configure<OutboxOptions>(configuration.GetSection("Users:Outbox"));
         services.ConfigureOptions<ConfigureProcessOutboxJob>();
+    }
+
+    private static void AddDomainEventHandlers(this IServiceCollection services)
+    {
+        Type[] domainEventHandlers = [.. Application.AssemblyReference.Assembly
+            .GetTypes()
+            .Where(t => t.IsAssignableTo(typeof(IDomainEventHandler)))];
+
+        foreach (Type domainEventHandler in domainEventHandlers)
+        {
+            services.TryAddScoped(domainEventHandler);
+        }
     }
 }
