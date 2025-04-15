@@ -4,6 +4,10 @@
       "IntervalInSeconds": 5,
       "BatchSize": 50
     },
+    "Inbox": {
+      "IntervalInSeconds": 15,
+      "BatchSize": 20
+    },
     "KeyCloak": {
       "AdminUrl": "",
       "TokenUrl": "",

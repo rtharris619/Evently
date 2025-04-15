@@ -17,6 +17,8 @@ using Evently.Common.Infrastructure.Outbox;
 using Evently.Modules.Users.Infrastructure.Outbox;
 using Evently.Common.Application.Messaging;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Evently.Common.Application.EventBus;
+using Evently.Modules.Users.Infrastructure.Inbox;
 
 namespace Evently.Modules.Users.Infrastructure;
 
@@ -27,6 +29,8 @@ public static class UsersModule
         IConfiguration configuration)
     {
         services.AddDomainEventHandlers();
+
+        services.AddIntegrationEventHandlers();
 
         services.AddInfrastructure(configuration);
 
@@ -79,6 +83,40 @@ public static class UsersModule
         foreach (Type domainEventHandler in domainEventHandlers)
         {
             services.TryAddScoped(domainEventHandler);
+
+            Type domainEvent = domainEventHandler
+                .GetInterfaces()
+                .Single(i => i.IsGenericType)
+                .GetGenericArguments()
+                .Single();
+
+            Type closedIdempotentHandler = typeof(IdempotentDomainEventHandler<>).MakeGenericType(domainEvent);
+
+            services.Decorate(domainEventHandler, closedIdempotentHandler);
+        }
+    }
+
+    private static void AddIntegrationEventHandlers(this IServiceCollection services)
+    {
+        Type[] integrationEventHandlers = Presentation.AssemblyReference.Assembly
+            .GetTypes()
+            .Where(t => t.IsAssignableTo(typeof(IIntegrationEventHandler)))
+            .ToArray();
+
+        foreach (Type integrationEventHandler in integrationEventHandlers)
+        {
+            services.TryAddScoped(integrationEventHandler);
+
+            Type integrationEvent = integrationEventHandler
+                .GetInterfaces()
+                .Single(i => i.IsGenericType)
+                .GetGenericArguments()
+                .Single();
+
+            Type closedIdempotentHandler =
+                typeof(IdempotentIntegrationEventHandler<>).MakeGenericType(integrationEvent);
+
+            services.Decorate(integrationEventHandler, closedIdempotentHandler);
         }
     }
 }

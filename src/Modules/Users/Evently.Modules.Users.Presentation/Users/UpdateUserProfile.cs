@@ -1,4 +1,6 @@
-﻿using Evently.Common.Domain;
+﻿using System.Security.Claims;
+using Evently.Common.Domain;
+using Evently.Common.Infrastructure.Authentication;
 using Evently.Common.Presentation.ApiResults;
 using Evently.Common.Presentation.Endpoints;
 using Evently.Modules.Users.Application.Users.UpdateUser;
@@ -13,16 +15,16 @@ internal sealed class UpdateUserProfile : IEndPoint
 {
     public void MapEndpoint(IEndpointRouteBuilder routeBuilder)
     {
-        routeBuilder.MapPut("users/{id}/profile", async (Guid id, UpdateUserProfileRequest request, ISender sender) =>
+        routeBuilder.MapPut("users/profile", async (UpdateUserProfileRequest request, ClaimsPrincipal claims, ISender sender) =>
         {
             Result result = await sender.Send(new UpdateUserCommand(
-                id,
+                claims.GetUserId(),
                 request.FirstName,
                 request.LastName));
 
             return result.Match(Results.NoContent, ApiResults.Problem);
         })
-        .RequireAuthorization()
+        .RequireAuthorization(Permissions.GetUser)
         .WithTags(Tags.Users);
     }
 
