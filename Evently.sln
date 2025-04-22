@@ -63,6 +63,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.Modules.Users.Integ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.Modules.Events.IntegrationEvents", "src\Modules\Events\Evently.Modules.Events.IntegrationEvents\Evently.Modules.Events.IntegrationEvents.csproj", "{5C14E246-A0F6-4B0F-A479-2972E8A09C54}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Attendance", "Attendance", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.Modules.Attendance.Domain", "src\Modules\Attendance\Evently.Modules.Attendance.Domain\Evently.Modules.Attendance.Domain.csproj", "{ECF6A3D0-9169-4E62-B114-48D5A0FC98EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.Modules.Attendance.Application", "src\Modules\Attendance\Evently.Modules.Attendance.Application\Evently.Modules.Attendance.Application.csproj", "{2A392739-07A5-4CAC-B84A-4081934795CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.Modules.Attendance.Infrastructure", "src\Modules\Attendance\Evently.Modules.Attendance.Infrastructure\Evently.Modules.Attendance.Infrastructure.csproj", "{92DAF582-632E-4132-A946-F4C5FCA87CD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.Modules.Attendance.Presentation", "src\Modules\Attendance\Evently.Modules.Attendance.Presentation\Evently.Modules.Attendance.Presentation.csproj", "{314DE1C5-8A3D-43E3-950D-C749226C76E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +159,22 @@ Global
 		{5C14E246-A0F6-4B0F-A479-2972E8A09C54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C14E246-A0F6-4B0F-A479-2972E8A09C54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C14E246-A0F6-4B0F-A479-2972E8A09C54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECF6A3D0-9169-4E62-B114-48D5A0FC98EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECF6A3D0-9169-4E62-B114-48D5A0FC98EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECF6A3D0-9169-4E62-B114-48D5A0FC98EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECF6A3D0-9169-4E62-B114-48D5A0FC98EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A392739-07A5-4CAC-B84A-4081934795CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A392739-07A5-4CAC-B84A-4081934795CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A392739-07A5-4CAC-B84A-4081934795CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A392739-07A5-4CAC-B84A-4081934795CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92DAF582-632E-4132-A946-F4C5FCA87CD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92DAF582-632E-4132-A946-F4C5FCA87CD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92DAF582-632E-4132-A946-F4C5FCA87CD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92DAF582-632E-4132-A946-F4C5FCA87CD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{314DE1C5-8A3D-43E3-950D-C749226C76E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{314DE1C5-8A3D-43E3-950D-C749226C76E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{314DE1C5-8A3D-43E3-950D-C749226C76E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{314DE1C5-8A3D-43E3-950D-C749226C76E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -179,6 +205,11 @@ Global
 		{5F239124-9620-486A-8804-6AD6FCF06798} = {58977D66-644A-43A0-95AD-CFC8A3F809A0}
 		{92A20FB6-F10E-4236-BA85-C3254E120942} = {44AAFDF0-CC8D-4230-AFD0-478A3D48CBC5}
 		{5C14E246-A0F6-4B0F-A479-2972E8A09C54} = {59E8BE84-D27A-4F2F-911D-438717E1F255}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {8C02C395-C831-4F3F-9BAE-35250E71C4D5}
+		{ECF6A3D0-9169-4E62-B114-48D5A0FC98EA} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{2A392739-07A5-4CAC-B84A-4081934795CC} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{92DAF582-632E-4132-A946-F4C5FCA87CD6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{314DE1C5-8A3D-43E3-950D-C749226C76E3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1E42AE86-7F3C-45F4-A386-AB71CC4446CB}
