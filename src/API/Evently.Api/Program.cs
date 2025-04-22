@@ -8,6 +8,9 @@ using HealthChecks.UI.Client;
 using Evently.Common.Presentation.Endpoints;
 using Evently.Modules.Users.Infrastructure;
 using Evently.Modules.Ticketing.Infrastructure;
+using System.Reflection;
+using Evently.Modules.Attendance.Infrastructure;
+using Evently.Common.Infrastructure.Configuration;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -20,29 +23,42 @@ builder.Services.AddProblemDetails();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddApplication([
+Assembly[] moduleApplicationAssemblies = [    
     Evently.Modules.Events.Application.AssemblyReference.Assembly,
     Evently.Modules.Users.Application.AssemblyReference.Assembly,
-    Evently.Modules.Ticketing.Application.AssemblyReference.Assembly]);
+    Evently.Modules.Ticketing.Application.AssemblyReference.Assembly,
+    Evently.Modules.Attendance.Application.AssemblyReference.Assembly
+];
 
-string databaseConnectionString = builder.Configuration.GetConnectionString("Database")!;
-string redisConnectionString = builder.Configuration.GetConnectionString("Cache")!;
+builder.Services.AddApplication(moduleApplicationAssemblies);
+
+string databaseConnectionString = builder.Configuration.GetConnectionStringOrThrow("Database");
+string redisConnectionString = builder.Configuration.GetConnectionStringOrThrow("Cache");
 
 builder.Services.AddInfrastructure(
-    [TicketingModule.ConfigureConsumers],
+    [
+        TicketingModule.ConfigureConsumers,
+        AttendanceModule.ConfigureConsumers
+    ],
     databaseConnectionString,
     redisConnectionString);
 
-builder.Configuration.AddModuleConfiguration(["events", "users", "ticketing"]);
+Uri keyCloakHealthUrl = builder.Configuration.GetKeyCloakHealthUrl();
 
 builder.Services.AddHealthChecks()
     .AddNpgSql(databaseConnectionString)
     .AddRedis(redisConnectionString)
-    .AddUrlGroup(new Uri(builder.Configuration.GetValue<string>("KeyCloak:HealthUrl")!), HttpMethod.Get, "keycloak");
+    .AddKeyCloak(keyCloakHealthUrl);
+
+builder.Configuration.AddModuleConfiguration(["events", "users", "ticketing", "attendance"]);
 
 builder.Services.AddEventsModule(builder.Configuration);
+
 builder.Services.AddUsersModule(builder.Configuration);
+
 builder.Services.AddTicketingModule(builder.Configuration);
+
+builder.Services.AddAttendanceModule(builder.Configuration);
 
 WebApplication app = builder.Build();
 
@@ -53,8 +69,6 @@ if (app.Environment.IsDevelopment())
 
     app.ApplyMigrations();
 }
-
-app.MapEndpoints();
 
 app.MapHealthChecks("health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
 {
@@ -68,5 +82,7 @@ app.UseExceptionHandler();
 // Order is important!
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapEndpoints();
 
 app.Run();
