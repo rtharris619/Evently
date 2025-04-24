@@ -23,7 +23,7 @@ internal sealed class AddToCart : IEndPoint
 
             return result.Match(() => Results.Ok(), ApiResults.Problem);
         })
-        .RequireAuthorization()
+        .RequireAuthorization(Permissions.AddToCart)
         .WithTags(Tags.Carts);
     }
 
