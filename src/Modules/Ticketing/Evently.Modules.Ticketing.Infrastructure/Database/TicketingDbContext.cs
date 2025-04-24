@@ -1,4 +1,6 @@
-﻿using Evently.Modules.Ticketing.Application.Abstractions.Data;
+﻿using Evently.Common.Infrastructure.Inbox;
+using Evently.Common.Infrastructure.Outbox;
+using Evently.Modules.Ticketing.Application.Abstractions.Data;
 using Evently.Modules.Ticketing.Domain.Customers;
 using Evently.Modules.Ticketing.Domain.Events;
 using Evently.Modules.Ticketing.Domain.Orders;
@@ -43,6 +45,11 @@ public sealed class TicketingDbContext(DbContextOptions<TicketingDbContext> opti
         modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
         modelBuilder.ApplyConfiguration(new TicketConfiguration());
         modelBuilder.ApplyConfiguration(new PaymentConfiguration());
+
+        modelBuilder.ApplyConfiguration(new OutboxMessageConfiguration());
+        modelBuilder.ApplyConfiguration(new OutboxMessageConsumerConfiguration());
+        modelBuilder.ApplyConfiguration(new InboxMessageConfiguration());
+        modelBuilder.ApplyConfiguration(new InboxMessageConsumerConfiguration());
     }
 
     public async Task<DbTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)

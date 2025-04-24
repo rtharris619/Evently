@@ -20,6 +20,15 @@ using Evently.Modules.Ticketing.Infrastructure.Tickets;
 using Evently.Modules.Ticketing.Domain.Events;
 using Evently.Modules.Ticketing.Application.Abstractions.Payments;
 using Evently.Common.Infrastructure.Outbox;
+using Evently.Common.Application.EventBus;
+using Evently.Common.Application.Messaging;
+using Evently.Modules.Ticketing.Infrastructure.Inbox;
+using Evently.Modules.Ticketing.Infrastructure.Outbox;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Evently.Modules.Ticketing.Application.Abstractions.Authentication;
+using Evently.Modules.Ticketing.Infrastructure.Authentication;
+using Evently.Modules.Users.IntegrationEvents;
+using Evently.Modules.Events.IntegrationEvents;
 
 namespace Evently.Modules.Ticketing.Infrastructure;
 
@@ -29,6 +38,10 @@ public static class TicketingModule
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddDomainEventHandlers();
+
+        services.AddIntegrationEventHandlers();
+
         services.AddInfrastructure(configuration);
 
         services.AddEndpoints(Presentation.AssemblyReference.Assembly);
@@ -38,7 +51,10 @@ public static class TicketingModule
 
     public static void ConfigureConsumers(IRegistrationConfigurator registrationConfigurator)
     {
-        registrationConfigurator.AddConsumer<UserRegisteredIntegrationEventConsumer>();
+        registrationConfigurator.AddConsumer<IntegrationEventConsumer<UserRegisteredIntegrationEvent>>();
+        registrationConfigurator.AddConsumer<IntegrationEventConsumer<UserProfileUpdatedIntegrationEvent>>();
+        registrationConfigurator.AddConsumer<IntegrationEventConsumer<EventPublishedIntegrationEvent>>();
+        registrationConfigurator.AddConsumer<IntegrationEventConsumer<TicketTypePriceChangedIntegrationEvent>>();
     }
 
     private static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
@@ -63,5 +79,62 @@ public static class TicketingModule
 
         services.AddSingleton<CartService>();
         services.AddSingleton<IPaymentService, PaymentService>();
+
+        services.AddScoped<ICustomerContext, CustomerContext>();
+
+        services.Configure<OutboxOptions>(configuration.GetSection("Ticketing:Outbox"));
+
+        services.ConfigureOptions<ConfigureProcessOutboxJob>();
+
+        services.Configure<InboxOptions>(configuration.GetSection("Ticketing:Inbox"));
+
+        services.ConfigureOptions<ConfigureProcessInboxJob>();
+    }
+
+    private static void AddDomainEventHandlers(this IServiceCollection services)
+    {
+        Type[] domainEventHandlers = Application.AssemblyReference.Assembly
+            .GetTypes()
+            .Where(t => t.IsAssignableTo(typeof(IDomainEventHandler)))
+            .ToArray();
+
+        foreach (Type domainEventHandler in domainEventHandlers)
+        {
+            services.TryAddScoped(domainEventHandler);
+
+            Type domainEvent = domainEventHandler
+                .GetInterfaces()
+                .Single(i => i.IsGenericType)
+                .GetGenericArguments()
+                .Single();
+
+            Type closedIdempotentHandler = typeof(IdempotentDomainEventHandler<>).MakeGenericType(domainEvent);
+
+            services.Decorate(domainEventHandler, closedIdempotentHandler);
+        }
+    }
+
+    private static void AddIntegrationEventHandlers(this IServiceCollection services)
+    {
+        Type[] integrationEventHandlers = Presentation.AssemblyReference.Assembly
+            .GetTypes()
+            .Where(t => t.IsAssignableTo(typeof(IIntegrationEventHandler)))
+            .ToArray();
+
+        foreach (Type integrationEventHandler in integrationEventHandlers)
+        {
+            services.TryAddScoped(integrationEventHandler);
+
+            Type integrationEvent = integrationEventHandler
+                .GetInterfaces()
+                .Single(i => i.IsGenericType)
+                .GetGenericArguments()
+                .Single();
+
+            Type closedIdempotentHandler =
+                typeof(IdempotentIntegrationEventHandler<>).MakeGenericType(integrationEvent);
+
+            services.Decorate(integrationEventHandler, closedIdempotentHandler);
+        }
     }
 }
