@@ -5,7 +5,6 @@
     <ProjectReference Include="..\Evently.Modules.Ticketing.IntegrationEvents\Evently.Modules.Ticketing.IntegrationEvents.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Tickets\ArchiveTicketsForEvent\" />
     <Folder Include="Tickets\CreateTicketBatch\" />
     <Folder Include="Tickets\GetTicket\" />
     <Folder Include="Tickets\GetTicketByCode\" />

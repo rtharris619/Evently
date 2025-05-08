@@ -28,6 +28,8 @@ using Evently.Common.Application.EventBus;
 using Evently.Common.Application.Messaging;
 using Evently.Modules.Events.Infrastructure.Inbox;
 using Evently.Modules.Events.Infrastructure.Outbox;
+using MassTransit;
+using Evently.Modules.Events.Presentation.Events.CancelEventSaga;
 
 namespace Evently.Modules.Events.Infrastructure;
 
@@ -46,6 +48,13 @@ public static class EventsModule
         services.AddInfrastructure(configuration);
 
         return services;
+    }
+
+    public static Action<IRegistrationConfigurator> ConfigureConsumers(string redisConnectionString)
+    {
+        return registrationConfigurator => registrationConfigurator
+            .AddSagaStateMachine<CancelEventSaga, CancelEventState>()
+            .RedisRepository(redisConnectionString);
     }
 
     private static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)

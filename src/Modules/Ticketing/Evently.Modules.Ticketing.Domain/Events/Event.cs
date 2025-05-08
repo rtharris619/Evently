@@ -60,7 +60,7 @@ public sealed class Event : Entity
 
         Canceled = true;
 
-        Raise(new EventCanceledDomainEvent(Id));
+        Raise(new EventCancelledDomainEvent(Id));
     }
 
     public void PaymentsRefunded()
